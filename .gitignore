@@ -86,3 +86,6 @@ coverage/
 Thumbs.db
 .idea/
 .vscode/
+
+# Local notes and temporary files
+server_notes.md
