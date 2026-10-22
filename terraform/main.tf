@@ -67,3 +67,4 @@ output "server_ip" {
 output "server_ipv6" {
   value = hcloud_server.web.ipv6_address
 }
+
