@@ -1,0 +1,22 @@
+{
+    email john.silvell@josil.se
+}
+
+johnsilvell.dev, www.johnsilvell.dev {
+	header Content-Type "text/html; charset=utf-8"
+	respond "<h1>Welcome to  johnsilvell.dev</h1>"
+}
+
+api.johnsilvell.dev {
+	request_body{
+		max_size 64KB
+	}
+
+	handle /contact {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	handle {
+		respond "Not found" 404
+	}
+}
