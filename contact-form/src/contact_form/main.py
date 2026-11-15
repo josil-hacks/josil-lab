@@ -1,10 +1,12 @@
+import os
+
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, EmailStr
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-app = FastAPI(title="Kontaktformulär API")
+app = FastAPI(title="Contact Form API")
 
 # 1. Definiera datamodellen för formuläret
 class ContactSchema(BaseModel):
@@ -13,26 +15,26 @@ class ContactSchema(BaseModel):
     message: str
 
 # 2. Inställningar för E-post (SMTP)
-SMTP_SERVER = "smtp.gmail.com"  # Ändra till din leverantör
-SMTP_PORT = 587                  # Standardport för TLS
-SENDER_EMAIL = "din_epost@gmail.com"
-SENDER_PASSWORD = "ditt_app_lösenord"  # Använd ett app-lösenord, inte ditt vanliga lösenord
-RECEIVER_EMAIL = "mottagare@exempel.se"
+SMTP_SERVER = os.environ["SMTP_SERVER"]  # Ändra till din leverantör
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))                  # Standardport för TLS
+SENDER_EMAIL = os.environ["SENDER_EMAIL"]
+SENDER_PASSWORD = os.environ["SENDER_PASSWORD"]  # Använd ett app-lösenord, inte ditt vanliga lösenord
+RECEIVER_EMAIL = os.environ["RECEIVER_EMAIL"]
 
 # Hjälpfunktion för att skicka mejl
 def send_email(contact: ContactSchema):
     msg = MIMEMultipart()
     msg['From'] = SENDER_EMAIL
     msg['To'] = RECEIVER_EMAIL
-    msg['Subject'] = f"Nytt kontaktmeddelande från {contact.name}"
+    msg['Subject'] = f"New message on johnsilvell.com from {contact.name}"
 
     body = f"""
-    Du har fått ett nytt meddelande via kontaktformuläret!
+    You have received a new message via the contact form!
 
-    Namn: {contact.name}
-    E-post: {contact.email}
-    
-    Meddelande:
+    Name: {contact.name}
+    Email: {contact.email}
+
+    Message:
     {contact.message}
     """
     msg.attach(MIMEText(body, 'plain'))
