@@ -1,0 +1,4 @@
+# Keep local secret files out of the public repository.
+secrets/
+*.secret
+smtp_password*

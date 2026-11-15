@@ -20,9 +20,9 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY src ./src
 RUN uv sync --frozen --no-dev
 
-RUN useradd --create-home --shell /usr/sbin/nologin appuser \
+RUN useradd --user-group --uid 10001 --create-home --shell /usr/sbin/nologin appuser \
     && chown -R appuser:appuser /app
-USER appuser
+USER 10001:10001
 
 EXPOSE 8000
 

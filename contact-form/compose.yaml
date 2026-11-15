@@ -1,0 +1,19 @@
+services:
+  contact-form:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      SMTP_SERVER: ${SMTP_SERVER:-smtp.example.com}
+      SMTP_PORT: "${SMTP_PORT:-587}"
+      SENDER_EMAIL: ${SENDER_EMAIL:-sender@example.com}
+      RECEIVER_EMAIL: ${RECEIVER_EMAIL:-recipient@example.com}
+      SMTP_PASSWORD_FILE: /run/secrets/smtp_password
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+    secrets:
+      - smtp_password
+
+secrets:
+  smtp_password:
+    file: /etc/contact-form/smtp_password
